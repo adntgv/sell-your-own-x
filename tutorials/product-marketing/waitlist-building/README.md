@@ -135,8 +135,8 @@ Offer different levels of access or rewards based on the number of successful re
 
 ## 📚 Additional Resources
 
-- [How to Build a Waitlist for Your Product](https://blog.hubspot.com/marketing/how-to-build-a-waitlist)
-- [The Psychology of Waitlists](https://www.nirandfar.com/the-psychology-of-waitlists/)
+- [How to Build a Waitlist for Your Product](https://tinybullyagency.com/waitlist-marketing-strategy/)
+- [The Psychology of Waitlists](https://viral-loops.com/blog/4-steps-design-virality-product/)
 
 ## 🎯 Next Steps
 

@@ -1352,7 +1352,7 @@ class AIContentOptimizer {
         `;
         
         try {
-            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            const response = await fetch('https://platform.openai.com/docs/api-reference/chat/create {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.openaiApiKey}`,

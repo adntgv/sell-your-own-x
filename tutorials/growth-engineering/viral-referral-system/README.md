@@ -149,8 +149,8 @@ Reward users for the referrals made by the people they referred. This can create
 
 ## 📚 Additional Resources
 
-- [The Viral Loop: A Must-Read for Startups](https://andrewchen.co/the-viral-loop-a-must-read-for-startups/)
-- [Viral Marketing: The Ultimate Guide](https://www.referralcandy.com/blog/viral-marketing-guide/)
+- [The Viral Loop: A Must-Read for Startups](https://andrewchen.com/whats-your-viral-loop-understanding-the-engine-of-adoption/)
+- [Viral Marketing: The Ultimate Guide](https://viral-loops.com/referral-marketing)
 
 ## 🎯 Next Steps
 
