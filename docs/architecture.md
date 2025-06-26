@@ -124,7 +124,7 @@ tutorial-name/
 ### Local Setup
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/sell-your-own-x.git
+git clone https://github.com/adntgv/sell-your-own-x.git
 cd sell-your-own-x
 
 # Install dependencies (if any)

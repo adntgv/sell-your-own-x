@@ -18,7 +18,7 @@ Use this template when creating new tutorials for "Sell Your Own X".
 [Explain the marketing challenge this tutorial addresses]
 
 ### Why It Matters
-[Business impact and importance for technical founders]
+[Business impact and importance for technical founders. Consider linking to broader marketing theory or psychological principles if relevant.]
 
 ### Common Mistakes
 [What people typically do wrong without proper implementation]
@@ -32,7 +32,7 @@ Use this template when creating new tutorials for "Sell Your Own X".
 [High-level strategy and methodology]
 
 ### Tools We'll Use
-- **Primary Tool**: [Main tool/service with brief description]
+- **Primary Tool**: [Main tool/service with brief description. Explain *why* this tool is chosen from a marketing strategy perspective.]
 - **Supporting Tools**: [Additional tools needed]
 - **Development Tools**: [Programming languages, frameworks]
 
@@ -40,7 +40,7 @@ Use this template when creating new tutorials for "Sell Your Own X".
 [What you'll have at the end and how it performs]
 
 ### Time and Resource Investment
-[Realistic expectations for implementation and maintenance]
+[Realistic expectations for implementation and maintenance. This section is crucial for setting user expectations.]
 
 ## 🛠️ Implementation Guide
 
@@ -78,7 +78,10 @@ cp .env.example .env
 
 #### Code Example
 ```javascript
-// Provide working code examples with comments
+// Provide working code examples with comments.
+// IMPORTANT: For substantial code, place it in the 'code/' subdirectory
+// and reference it here with clear instructions on how to run it.
+// Example: See 'code/my_script.js' for the full implementation.
 const implementation = {
   // Your implementation here
 };
@@ -109,6 +112,7 @@ npm test
 1. [Step-by-step verification process]
 2. [What to look for to confirm it's working]
 3. [How to troubleshoot common issues]
+4. [After running tests, verify outcomes in RESULTS.md if applicable.]
 
 ## 📊 Measuring Results
 
@@ -171,8 +175,8 @@ npm test
 
 ### Getting Help
 - Check our [FAQ](../docs/faq.md)
-- Search [existing issues](https://github.com/repo/issues)
-- Ask in our [community discussions](https://github.com/repo/discussions)
+- Search [existing issues](https://github.com/adntgv/sell-your-own-x/issues)
+- Ask in our [community discussions](https://github.com/adntgv/sell-your-own-x/discussions)
 
 ## 📚 Additional Resources
 
@@ -200,10 +204,12 @@ npm test
 - [Advanced features to consider]
 - [Integration opportunities]
 - [Scaling considerations]
+- [Consider broader marketing concepts like continuous iteration, learning from failures, and adapting strategies.]
 
 ### Related Learning
 - [Suggested next tutorials]
 - [Complementary skills to develop]
+- [Relevant marketing frameworks (e.g., AIDA, Pirate Metrics) or ethical considerations in marketing.]
 
 ---
 

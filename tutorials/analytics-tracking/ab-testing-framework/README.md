@@ -610,7 +610,7 @@ class ABTestingSDK {
 // Usage example
 const abTesting = new ABTestingSDK({
     apiKey: 'your-api-key',
-    apiEndpoint: 'https://your-api.com'
+    apiEndpoint: 'https://api.example.com'
 });
 
 // Simple variant check

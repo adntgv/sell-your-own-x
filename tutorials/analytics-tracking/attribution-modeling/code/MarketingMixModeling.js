@@ -60,7 +60,7 @@ class MarketingMixModeling {
             insights.saturationLevels[channel] = {
                 currentSaturation: saturationAnalysis.currentLevel,
                 optimalSpend: saturationAnalysis.optimalSpend,
-                marginalROI: saturationAnalysis.marginalAnalysis,
+                marginalROI: saturationAnalysis.marginalROI,
                 saturationPoint: saturationAnalysis.saturationPoint
             };
         }
