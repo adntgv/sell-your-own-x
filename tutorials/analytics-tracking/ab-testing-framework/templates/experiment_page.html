@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A/B Test Example</title>
+    <script src="../code/abTestingSDK.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .variant-a {
+            background-color: #e6ffe6;
+            color: #006600;
+        }
+        .variant-b {
+            background-color: #ffe6e6;
+            color: #cc0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="page-title">Welcome to our Website!</h1>
+        <p id="page-description">This is the control version of our page.</p>
+        <button id="cta-button">Learn More</button>
+    </div>
+
+    <script>
+        const abTesting = new ABTestingSDK({
+            apiKey: 'your-api-key',
+            apiEndpoint: 'http://localhost:3000' // Replace with your backend API endpoint
+        });
+
+        // Example A/B test: "homepage_headline_test"
+        const headlineVariant = abTesting.getVariant('homepage_headline_test');
+
+        if (headlineVariant === 'variant_a') {
+            document.getElementById('page-title').innerText = 'Discover Amazing Products!';
+            document.getElementById('page-description').innerText = 'Experience a new way to shop with our enhanced features.';
+            document.getElementById('cta-button').innerText = 'Shop Now';
+            document.querySelector('.container').classList.add('variant-a');
+        } else if (headlineVariant === 'variant_b') {
+            document.getElementById('page-title').innerText = 'Unlock Exclusive Deals!';
+            document.getElementById('page-description').innerText = 'Sign up today and get access to members-only offers.';
+            document.getElementById('cta-button').innerText = 'Sign Up';
+            document.querySelector('.container').classList.add('variant-b');
+        }
+
+        // Track a click event on the CTA button
+        document.getElementById('cta-button').addEventListener('click', () => {
+            abTesting.track('cta_button_click', {
+                button_text: document.getElementById('cta-button').innerText,
+                page_variant: headlineVariant
+            });
+            alert('Button clicked! Event tracked.');
+        });
+
+        // Track a page view event
+        abTesting.track('page_view', {
+            page_name: 'homepage',
+            page_variant: headlineVariant
+        });
+    </script>
+</body>
+</html>

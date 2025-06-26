@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Performance Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .report-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        .chart-container {
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <h1>SEO Performance Report</h1>
+        <p>Date: <span id="report-date"></span></p>
+
+        <div class="chart-container">
+            <h2>Organic Traffic Trend</h2>
+            <canvas id="trafficChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Keyword Rankings (Top 10)</h2>
+            <canvas id="rankingsChart"></canvas>
+        </div>
+
+        <h2>Technical SEO Health</h2>
+        <p>Overall Score: <span id="technical-score"></span>%</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Status</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Core Web Vitals (LCP)</td>
+                    <td id="lcp-status"></td>
+                    <td id="lcp-value"></td>
+                </tr>
+                <tr>
+                    <td>Mobile Usability</td>
+                    <td id="mobile-status"></td>
+                    <td id="mobile-value"></td>
+                </tr>
+                <tr>
+                    <td>Indexability</td>
+                    <td id="indexability-status"></td>
+                    <td id="indexability-value"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('report-date').innerText = new Date().toLocaleDateString();
+
+        // Dummy data for demonstration
+        const trafficData = {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Organic Sessions',
+                data: [1000, 1200, 1500, 1300, 1700, 2000],
+                borderColor: '#007bff',
+                fill: false
+            }]
+        };
+
+        const rankingsData = {
+            labels: ['Keyword 1', 'Keyword 2', 'Keyword 3', 'Keyword 4', 'Keyword 5'],
+            datasets: [{
+                label: 'Position',
+                data: [3, 5, 2, 7, 4],
+                backgroundColor: ['#28a745', '#ffc107', '#007bff', '#dc3545', '#17a2b8'],
+            }]
+        };
+
+        // Render charts
+        new Chart(document.getElementById('trafficChart'), {
+            type: 'line',
+            data: trafficData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Organic Traffic Trend'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('rankingsChart'), {
+            type: 'bar',
+            data: rankingsData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Keyword Rankings (Top 10)'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        reverse: true // Lower position is better
+                    }
+                }
+            }
+        });
+
+        // Technical SEO data
+        const technicalSEO = {
+            overallScore: 85,
+            lcp: { status: 'Good', value: '2.1s' },
+            mobile: { status: 'Good', value: 'Mobile-friendly' },
+            indexability: { status: 'Good', value: 'All pages indexed' }
+        };
+
+        document.getElementById('technical-score').innerText = technicalSEO.overallScore;
+        document.getElementById('lcp-status').innerText = technicalSEO.lcp.status;
+        document.getElementById('lcp-value').innerText = technicalSEO.lcp.value;
+        document.getElementById('mobile-status').innerText = technicalSEO.mobile.status;
+        document.getElementById('mobile-value').innerText = technicalSEO.mobile.value;
+        document.getElementById('indexability-status').innerText = technicalSEO.indexability.status;
+        document.getElementById('indexability-value').innerText = technicalSEO.indexability.value;
+    </script>
+</body>
+</html>

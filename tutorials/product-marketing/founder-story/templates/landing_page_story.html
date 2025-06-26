@@ -1,0 +1,110 @@
+<!-- Story Section for Landing Page -->
+<section class="founder-story">
+    <div class="container">
+        <div class="story-content">
+            <img src="founder-photo.jpg" alt="[Your Name], Founder" class="founder-photo">
+            <div class="story-text">
+                <h2>Why I Built [Product Name]</h2>
+                <p class="story-hook">
+                    "After 8 years as a developer, I was tired of spending more time 
+                    fighting tools than building products."
+                </p>
+                
+                <p>
+                    At my last startup, I calculated that our 5-person engineering team 
+                    was losing 20+ hours per week to repetitive tasks. Manual testing, 
+                    deployment headaches, waiting for code reviews on simple changes.
+                </p>
+                
+                <p>
+                    That's when I realized: the technology existed to automate 80% of 
+                    this work, but nobody was building tools that actually understood 
+                    how developers work.
+                </p>
+                
+                <p class="story-mission">
+                    <strong>[Product Name] exists because I believe your time should be spent 
+                    creating, not configuring.</strong> Every developer deserves tools that 
+                    work as smart as they do.
+                </p>
+                
+                <p class="story-signature">
+                    — [Your Name], Founder & Lead Developer<br>
+                    <span class="credentials">[Previous Company] • [University] • [Notable Achievement]</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.founder-story {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.story-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.founder-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.story-text {
+    flex: 1;
+}
+
+.story-text h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.story-hook {
+    font-size: 1.2rem;
+    font-style: italic;
+    color: #e74c3c;
+    margin-bottom: 20px;
+    border-left: 4px solid #e74c3c;
+    padding-left: 20px;
+}
+
+.story-mission {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+    margin: 20px 0;
+}
+
+.story-signature {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.credentials {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+@media (max-width: 768px) {
+    .story-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .founder-photo {
+        align-self: center;
+    }
+}
+</style>

@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  # AI content generation backend
+  ai-content-generator:
+    image: python:3.9-slim-buster
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+    command: >
+      sh -c "
+        pip install -r requirements.txt &&
+        python app.py
+      "
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+
+  # Frontend for content management and review
+  content-frontend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./code/frontend:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:3000
+
+volumes:
+  # No persistent volumes needed for this example

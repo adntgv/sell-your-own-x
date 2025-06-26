@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initial Contact Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0056b3;
+        }
+        .signature {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <p>Hi {{first_name}},</p>
+        <p>I hope this email finds you well.</p>
+        <p>I'm reaching out because I noticed {{company_name}} is {{recent_activity_or_pain_point}}. We specialize in helping companies like yours {{achieve_benefit}}.</p>
+        <p>Would you be open to a brief 15-minute chat next week to explore how we could potentially help?</p>
+        <p>Best regards,</p>
+        <div class="signature">
+            <p>{{your_name}}</p>
+            <p>{{your_title}}</p>
+            <p>{{your_company}}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "event-tracking-setup-tutorial",
+  "version": "1.0.0",
+  "description": "Code examples for the event tracking setup tutorial.",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000 --host=localhost --open=/code/"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

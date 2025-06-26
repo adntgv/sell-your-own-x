@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  # This tutorial primarily uses Carrd.co directly, so no complex Docker setup is needed.
+  # This simple web service can be used to host a local HTML file demonstrating a Carrd-like page.
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code/public:/usr/share/nginx/html
+
+volumes:
+  # No persistent volumes needed for this example

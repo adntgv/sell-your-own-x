@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  backend:
+    build: ./code
+    ports:
+      - "3006:3006"
+    volumes:
+      - ./code:/app
+    environment:
+      NODE_ENV: development
+  frontend:
+    build: ./templates
+    ports:
+      - "86:86"
+    volumes:
+      - ./templates:/usr/share/nginx/html
+    depends_on:
+      - backend

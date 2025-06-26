@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Simple web server to host the example site
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code/public:/usr/share/nginx/html
+
+  # Optional: Node.js backend for server-side tracking examples
+  backend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code/backend:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - POSTHOG_API_KEY=${POSTHOG_API_KEY}
+      - POSTHOG_API_HOST=${POSTHOG_API_HOST}
+
+volumes:
+  # No persistent volumes needed for this example

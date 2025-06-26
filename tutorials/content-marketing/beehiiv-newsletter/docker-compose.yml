@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  # Simple web server to host the example site with Beehiiv form
+  web:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code/public:/usr/share/nginx/html
+
+volumes:
+  # No persistent volumes needed for this example

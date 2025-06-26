@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # A/B testing backend service
+  ab-testing-backend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgres://user:password@db:5432/ab_testing
+      - REDIS_URL=redis://redis:6379
+
+  # PostgreSQL for test data
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=ab_testing
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Redis for caching and real-time data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:

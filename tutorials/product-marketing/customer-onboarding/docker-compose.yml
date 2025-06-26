@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Onboarding flow backend service
+  onboarding-backend:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgres://user:password@db:5432/onboarding
+      - EMAIL_API_KEY=${EMAIL_API_KEY}
+
+  # PostgreSQL for user data and progress tracking
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=onboarding
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Frontend for in-app guides (if applicable)
+  onboarding-frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./code/public:/usr/share/nginx/html
+
+volumes:
+  postgres_data:

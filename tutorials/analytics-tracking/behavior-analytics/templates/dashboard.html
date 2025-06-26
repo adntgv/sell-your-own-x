@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Behavior Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .dashboard-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #0056b3;
+        }
+        .chart-container {
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Behavior Analytics Dashboard</h1>
+
+        <div class="chart-container">
+            <h2>User Engagement</h2>
+            <canvas id="engagementChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>Conversion Funnel</h2>
+            <canvas id="funnelChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h2>User Segments</h2>
+            <canvas id="segmentsChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Dummy data for demonstration
+        const engagementData = {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Average Session Duration (minutes)',
+                data: [5, 7, 6, 8, 9, 10, 7],
+                borderColor: '#007bff',
+                fill: false
+            }]
+        };
+
+        const funnelData = {
+            labels: ['Visit', 'Signup', 'Onboarding', 'First Action'],
+            datasets: [{
+                label: 'Users',
+                data: [1000, 500, 300, 150],
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6c757d'],
+            }]
+        };
+
+        const segmentsData = {
+            labels: ['High Engaged', 'Medium Engaged', 'Low Engaged'],
+            datasets: [{
+                label: 'Users',
+                data: [400, 300, 300],
+                backgroundColor: ['#17a2b8', '#6f42c1', '#fd7e14'],
+            }]
+        };
+
+        // Render charts
+        new Chart(document.getElementById('engagementChart'), {
+            type: 'line',
+            data: engagementData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Engagement Over Time'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('funnelChart'), {
+            type: 'bar',
+            data: funnelData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Conversion Funnel'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('segmentsChart'), {
+            type: 'pie',
+            data: segmentsData,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Segments'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

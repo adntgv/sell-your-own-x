@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Handoff Notification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #dc3545;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <h1>Sales Handoff Alert!</h1>
+        <p>A new lead, <strong>{{lead_name}}</strong> ({{lead_email}}), has reached the sales-qualified stage.</p>
+        <p><strong>Lead Details:</strong></p>
+        <ul>
+            <li><strong>Company:</strong> {{company_name}}</li>
+            <li><strong>Lead Score:</strong> {{lead_score}}</li>
+            <li><strong>Recent Activity:</strong> {{recent_activity}}</li>
+            <li><strong>Key Interests:</strong> {{key_interests}}</li>
+        </ul>
+        <p>Please follow up with this lead as soon as possible.</p>
+        <p>Best regards,<br>Marketing Automation System</p>
+    </div>
+</body>
+</html>
