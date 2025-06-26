@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  landing-page:
+    image: nginx:alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - ./code:/usr/share/nginx/html
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    command: [nginx, '-g', 'daemon off;']
+
+  # Optional: Local development server with hot reload
+  dev-server:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install -g live-server &&
+        live-server --port=3001 --host=0.0.0.0 --no-browser
+      "
+    environment:
+      - NODE_ENV=development
+
+  # Analytics and testing tools
+  lighthouse:
+    image: femtopixel/google-lighthouse
+    command: >
+      lighthouse
+      --chrome-flags="--headless --no-sandbox --disable-gpu"
+      --output-path=/reports
+      --output=html
+      --output=json
+      http://landing-page
+    volumes:
+      - ./reports:/reports
+    depends_on:
+      - landing-page
+    profiles:
+      - testing

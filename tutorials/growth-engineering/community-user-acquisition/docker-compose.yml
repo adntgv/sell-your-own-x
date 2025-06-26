@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  # Community tracking backend
+  community-tracker:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install express cors sqlite3 axios &&
+        node server.js
+      "
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+      - DATABASE_PATH=/app/data/community.db
+    depends_on:
+      - redis
+
+  # Redis for caching and session management
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  # Community dashboard
+  dashboard:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./code/dashboard:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install express ejs chart.js &&
+        node dashboard-server.js
+      "
+    environment:
+      - PORT=3001
+      - API_URL=http://community-tracker:3000
+    depends_on:
+      - community-tracker
+
+  # Content scheduler
+  scheduler:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code/scheduler:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install node-cron axios &&
+        node scheduler.js
+      "
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://community-tracker:3000
+    depends_on:
+      - community-tracker
+
+volumes:
+  redis_data:

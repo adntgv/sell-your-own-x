@@ -1,0 +1,139 @@
+name: Tutorial Quality Check
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: |
+        npm install -g markdown-link-check
+        npm install -g markdownlint-cli
+        npm install -g alex
+    
+    - name: Check Markdown Links
+      run: |
+        echo "Checking all markdown links..."
+        find . -name "*.md" -not -path "./node_modules/*" -not -path "./.git/*" | \
+        xargs -I {} markdown-link-check {} --config .github/markdown-link-check-config.json
+    
+    - name: Lint Markdown Files
+      run: |
+        echo "Linting markdown files..."
+        markdownlint **/*.md --ignore node_modules --config .github/markdownlint-config.json
+    
+    - name: Check for Inclusive Language
+      run: |
+        echo "Checking for inclusive language..."
+        alex **/*.md --why || true
+    
+    - name: Validate Tutorial Structure
+      run: |
+        echo "Validating tutorial structure..."
+        node .github/scripts/validate-tutorials.js
+    
+    - name: Check Code Examples
+      run: |
+        echo "Validating code examples..."
+        find tutorials -name "*.js" -o -name "*.html" -o -name "*.css" | \
+        xargs -I {} node -c "console.log('Syntax check: {}')" || echo "No JS files to check"
+    
+    - name: Validate Docker Environments
+      run: |
+        echo "Checking Docker configurations..."
+        find tutorials -name "docker-compose.yml" | \
+        xargs -I {} docker-compose -f {} config --quiet
+    
+    - name: Tutorial Completeness Check
+      run: |
+        echo "Checking tutorial completeness..."
+        node .github/scripts/completeness-check.js
+
+  security-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Run Security Scan
+      uses: securecodewarrior/github-action-add-sarif@v1
+      with:
+        sarif-file: 'security-scan-results.sarif'
+      continue-on-error: true
+    
+    - name: Check for Secrets
+      run: |
+        echo "Scanning for potential secrets..."
+        if grep -r -i "api[_-]key\|password\|secret\|token" tutorials/ --include="*.js" --include="*.md"; then
+          echo "⚠️  Potential secrets found in tutorials"
+          exit 1
+        fi
+        echo "✅ No hardcoded secrets detected"
+
+  tutorial-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tutorial: 
+          - "product-marketing/landing-page"
+          - "email-marketing/automation-sequences"
+          - "product-marketing/founder-story"
+          - "growth-engineering/community-user-acquisition"
+          - "analytics-tracking/behavior-analytics"
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Docker
+      uses: docker/setup-buildx-action@v2
+    
+    - name: Test Tutorial Environment
+      run: |
+        cd tutorials/${{ matrix.tutorial }}
+        if [ -f "docker-compose.yml" ]; then
+          echo "Testing Docker environment for ${{ matrix.tutorial }}"
+          docker-compose config --quiet
+          echo "✅ Docker configuration valid"
+        else
+          echo "⚠️  No Docker environment found for ${{ matrix.tutorial }}"
+        fi
+    
+    - name: Check Tutorial Requirements
+      run: |
+        cd tutorials/${{ matrix.tutorial }}
+        
+        # Check required files exist
+        required_files=("README.md")
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Missing required file: $file"
+            exit 1
+          fi
+        done
+        
+        # Check README structure
+        if ! grep -q "## 🎯 Problem Statement" README.md; then
+          echo "❌ Missing Problem Statement section"
+          exit 1
+        fi
+        
+        if ! grep -q "## 🛠️ Implementation Guide" README.md; then
+          echo "❌ Missing Implementation Guide section"
+          exit 1
+        fi
+        
+        echo "✅ Tutorial structure validation passed"

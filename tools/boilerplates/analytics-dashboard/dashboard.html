@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Analytics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f7fa; }
+        
+        .dashboard { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .header { background: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header p { color: #7f8c8d; }
+        
+        .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .metric-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .metric-card h3 { font-size: 0.9rem; color: #7f8c8d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .metric-value { font-size: 2.5rem; font-weight: 700; color: #2c3e50; margin-bottom: 5px; }
+        .metric-change { font-size: 0.9rem; }
+        .metric-change.positive { color: #27ae60; }
+        .metric-change.negative { color: #e74c3c; }
+        
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .chart-container { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .chart-container h3 { margin-bottom: 20px; color: #2c3e50; }
+        
+        .table-container { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); overflow: hidden; }
+        .table-header { background: #34495e; color: white; padding: 20px; }
+        .table-content { padding: 0; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #ecf0f1; }
+        th { background: #f8f9fa; font-weight: 600; color: #2c3e50; }
+        tr:hover { background: #f8f9fa; }
+        
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .status-active { background: #d4edda; color: #155724; }
+        .status-paused { background: #fff3cd; color: #856404; }
+        .status-draft { background: #f8d7da; color: #721c24; }
+        
+        @media (max-width: 768px) {
+            .charts-grid { grid-template-columns: 1fr; }
+            .metrics-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <div class="header">
+            <h1>Marketing Analytics Dashboard</h1>
+            <p>Real-time insights into your marketing performance</p>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <h3>Conversion Rate</h3>
+                <div class="metric-value" id="conversion-rate">3.2%</div>
+                <div class="metric-change positive" id="conversion-change">+0.4% vs last week</div>
+            </div>
+            
+            <div class="metric-card">
+                <h3>Email Open Rate</h3>
+                <div class="metric-value" id="open-rate">28.5%</div>
+                <div class="metric-change positive" id="open-change">+2.1% vs last week</div>
+            </div>
+            
+            <div class="metric-card">
+                <h3>Trial Signups</h3>
+                <div class="metric-value" id="trial-signups">247</div>
+                <div class="metric-change positive" id="signup-change">+18% vs last week</div>
+            </div>
+            
+            <div class="metric-card">
+                <h3>Revenue (MRR)</h3>
+                <div class="metric-value" id="revenue">$12,450</div>
+                <div class="metric-change positive" id="revenue-change">+$1,200 vs last month</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <h3>Conversion Funnel (Last 30 Days)</h3>
+                <canvas id="funnelChart" width="400" height="200"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Traffic Sources</h3>
+                <canvas id="trafficChart" width="300" height="200"></canvas>
+            </div>
+        </div>
+
+        <!-- Email Campaigns Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Recent Email Campaigns</h3>
+            </div>
+            <div class="table-content">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Campaign</th>
+                            <th>Sent</th>
+                            <th>Open Rate</th>
+                            <th>Click Rate</th>
+                            <th>Conversions</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="campaigns-table">
+                        <tr>
+                            <td>Welcome Series #1</td>
+                            <td>1,247</td>
+                            <td>32.1%</td>
+                            <td>4.8%</td>
+                            <td>23</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Trial Nurturing</td>
+                            <td>856</td>
+                            <td>28.7%</td>
+                            <td>6.2%</td>
+                            <td>34</td>
+                            <td><span class="status-badge status-active">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>Feature Announcement</td>
+                            <td>2,134</td>
+                            <td>25.4%</td>
+                            <td>3.1%</td>
+                            <td>18</td>
+                            <td><span class="status-badge status-paused">Paused</span></td>
+                        </tr>
+                        <tr>
+                            <td>Win-back Campaign</td>
+                            <td>445</td>
+                            <td>19.8%</td>
+                            <td>2.7%</td>
+                            <td>8</td>
+                            <td><span class="status-badge status-draft">Draft</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funnel Chart
+        const funnelCtx = document.getElementById('funnelChart').getContext('2d');
+        const funnelChart = new Chart(funnelCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Website Visits', 'Landing Page Views', 'Email Signups', 'Trial Starts', 'Paid Conversions'],
+                datasets: [{
+                    label: 'Users',
+                    data: [10000, 3200, 847, 247, 52],
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#f39c12',
+                        '#e74c3c',
+                        '#9b59b6'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            borderDash: [2, 2]
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Traffic Sources Chart
+        const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+        const trafficChart = new Chart(trafficCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Organic Search', 'Direct', 'Social Media', 'Email', 'Paid Ads'],
+                datasets: [{
+                    data: [45, 25, 15, 10, 5],
+                    backgroundColor: [
+                        '#3498db',
+                        '#2ecc71',
+                        '#f39c12',
+                        '#e74c3c',
+                        '#9b59b6'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            padding: 20,
+                            usePointStyle: true
+                        }
+                    }
+                }
+            }
+        });
+
+        // Live data updates (simulate real-time data)
+        function updateMetrics() {
+            // Simulate metric updates
+            const conversionRate = (3.0 + Math.random() * 0.5).toFixed(1);
+            const openRate = (26 + Math.random() * 5).toFixed(1);
+            const signups = Math.floor(200 + Math.random() * 100);
+            const revenue = Math.floor(11000 + Math.random() * 3000);
+
+            document.getElementById('conversion-rate').textContent = conversionRate + '%';
+            document.getElementById('open-rate').textContent = openRate + '%';
+            document.getElementById('trial-signups').textContent = signups.toLocaleString();
+            document.getElementById('revenue').textContent = '$' + revenue.toLocaleString();
+        }
+
+        // Simulate API data fetching
+        async function fetchDashboardData() {
+            try {
+                // In a real app, this would fetch from your API
+                const response = await fetch('/api/dashboard-data');
+                if (response.ok) {
+                    const data = await response.json();
+                    updateDashboard(data);
+                }
+            } catch (error) {
+                console.log('Using demo data - connect to your analytics API');
+            }
+        }
+
+        function updateDashboard(data) {
+            // Update metrics
+            if (data.metrics) {
+                Object.keys(data.metrics).forEach(metric => {
+                    const element = document.getElementById(metric);
+                    if (element) {
+                        element.textContent = data.metrics[metric];
+                    }
+                });
+            }
+
+            // Update charts
+            if (data.funnelData) {
+                funnelChart.data.datasets[0].data = data.funnelData;
+                funnelChart.update();
+            }
+
+            if (data.trafficData) {
+                trafficChart.data.datasets[0].data = data.trafficData;
+                trafficChart.update();
+            }
+
+            // Update campaigns table
+            if (data.campaigns) {
+                updateCampaignsTable(data.campaigns);
+            }
+        }
+
+        function updateCampaignsTable(campaigns) {
+            const tbody = document.getElementById('campaigns-table');
+            tbody.innerHTML = campaigns.map(campaign => `
+                <tr>
+                    <td>${campaign.name}</td>
+                    <td>${campaign.sent.toLocaleString()}</td>
+                    <td>${campaign.openRate}%</td>
+                    <td>${campaign.clickRate}%</td>
+                    <td>${campaign.conversions}</td>
+                    <td><span class="status-badge status-${campaign.status.toLowerCase()}">${campaign.status}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch initial data
+            fetchDashboardData();
+            
+            // Update metrics every 30 seconds
+            setInterval(updateMetrics, 30000);
+            
+            // Fetch fresh data every 5 minutes
+            setInterval(fetchDashboardData, 300000);
+        });
+
+        // Export functions for integration
+        window.MarketingDashboard = {
+            updateMetrics,
+            updateDashboard,
+            fetchDashboardData
+        };
+    </script>
+</body>
+</html>

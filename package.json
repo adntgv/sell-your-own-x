@@ -1,0 +1,52 @@
+{
+  "name": "sell-your-own-x",
+  "version": "1.0.0",
+  "description": "The Developer's Guide to Learning Marketing by Doing - Hands-on tutorials for technical founders",
+  "main": "index.js",
+  "scripts": {
+    "validate": "node .github/scripts/validate-tutorials.js",
+    "check-links": "find . -name '*.md' -not -path './node_modules/*' | xargs markdown-link-check --config .github/markdown-link-check-config.json",
+    "lint-docs": "markdownlint **/*.md --ignore node_modules --config .github/markdownlint-config.json",
+    "test-tutorials": "npm run validate && npm run check-links && npm run lint-docs",
+    "dev": "npm run validate && echo '✅ Repository validation passed'",
+    "build": "npm run test-tutorials",
+    "docker-test": "find tutorials -name 'docker-compose.yml' -execdir docker-compose config --quiet \\;",
+    "setup-tutorial": "node scripts/setup-tutorial.js",
+    "generate-readme": "node scripts/generate-readme.js",
+    "stats": "node scripts/repo-stats.js"
+  },
+  "keywords": [
+    "marketing",
+    "developers",
+    "tutorials",
+    "growth",
+    "startup",
+    "technical-founders",
+    "hands-on",
+    "build-your-own"
+  ],
+  "author": "Sell Your Own X Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/sell-your-own-x.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/sell-your-own-x/issues"
+  },
+  "homepage": "https://github.com/your-username/sell-your-own-x#readme",
+  "devDependencies": {
+    "markdown-link-check": "^3.11.2",
+    "markdownlint-cli": "^0.37.0",
+    "alex": "^11.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.5.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

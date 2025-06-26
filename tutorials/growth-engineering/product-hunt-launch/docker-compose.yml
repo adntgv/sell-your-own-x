@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  # Launch Dashboard Application
+  launch-dashboard:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - PRODUCT_HUNT_API_KEY=${PRODUCT_HUNT_API_KEY}
+      - GOOGLE_ANALYTICS_ID=${GOOGLE_ANALYTICS_ID}
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - LINKEDIN_API_KEY=${LINKEDIN_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - redis
+      - postgres
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # PostgreSQL for storing launch data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=product_hunt_launch
+      - POSTGRES_USER=launch_user
+      - POSTGRES_PASSWORD=launch_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Automation worker for scheduled tasks
+  automation-worker:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node workers/automation-worker.js
+      "
+    environment:
+      - NODE_ENV=development
+      - PRODUCT_HUNT_API_KEY=${PRODUCT_HUNT_API_KEY}
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - LINKEDIN_API_KEY=${LINKEDIN_API_KEY}
+      - EMAIL_API_KEY=${EMAIL_API_KEY}
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://launch_user:launch_password@postgres:5432/product_hunt_launch
+    depends_on:
+      - redis
+      - postgres
+
+  # Email service for outreach campaigns
+  email-service:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node services/email-service.js
+      "
+    environment:
+      - NODE_ENV=development
+      - EMAIL_API_KEY=${EMAIL_API_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - MAILCHIMP_API_KEY=${MAILCHIMP_API_KEY}
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+
+volumes:
+  redis_data:
+  postgres_data:

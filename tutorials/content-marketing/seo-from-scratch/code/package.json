@@ -1,0 +1,50 @@
+{
+  "name": "seo-from-scratch",
+  "version": "1.0.0",
+  "description": "Complete SEO strategy implementation with analytics dashboard",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "audit": "node scripts/seo-audit.js",
+    "keywords": "node scripts/keyword-research.js",
+    "content": "node scripts/content-optimizer.js",
+    "links": "node scripts/link-builder.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.5.0",
+    "cheerio": "^1.0.0-rc.12",
+    "googleapis": "^126.0.1",
+    "redis": "^4.6.8",
+    "pg": "^8.11.3",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "rate-limiter-flexible": "^3.0.8",
+    "node-cron": "^3.0.3",
+    "puppeteer": "^21.3.8",
+    "openai": "^4.12.4",
+    "natural": "^6.5.0",
+    "sentiment": "^5.0.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0",
+    "eslint": "^8.49.0",
+    "supertest": "^6.3.3"
+  },
+  "keywords": [
+    "seo",
+    "analytics",
+    "keyword-research",
+    "content-optimization",
+    "link-building",
+    "technical-seo"
+  ],
+  "author": "SEO Tutorial",
+  "license": "MIT"
+}

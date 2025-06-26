@@ -1,0 +1,95 @@
+name: 📚 Tutorial Request
+description: Request a new tutorial for the repository
+title: "[Tutorial Request] "
+labels: ["tutorial-request", "enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new tutorial! We prioritize tutorials based on community demand and impact.
+
+  - type: input
+    id: tutorial-topic
+    attributes:
+      label: Tutorial Topic
+      description: What marketing topic should this tutorial cover?
+      placeholder: e.g., "How to build a referral program with Stripe"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      description: Which category does this tutorial belong to?
+      options:
+        - Product Marketing
+        - Growth Engineering
+        - Analytics & Tracking
+        - Email Marketing
+        - Content Marketing
+        - Paid Acquisition
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Difficulty Level
+      description: What difficulty level should this tutorial target?
+      options:
+        - Beginner
+        - Intermediate
+        - Advanced
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem Description
+      description: What specific marketing problem would this tutorial solve?
+      placeholder: Describe the challenge developers face that this tutorial would address
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-outcome
+    attributes:
+      label: Expected Outcome
+      description: What should users be able to build/achieve after completing this tutorial?
+      placeholder: e.g., "A working referral system that tracks and rewards users for successful referrals"
+    validations:
+      required: true
+
+  - type: textarea
+    id: tools-technologies
+    attributes:
+      label: Tools & Technologies
+      description: What tools, services, or technologies should be covered?
+      placeholder: e.g., "Stripe for payments, PostHog for tracking, React for frontend"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any additional information that would help in creating this tutorial
+      placeholder: Links to examples, specific use cases, target audience details, etc.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Are you interested in contributing to this tutorial?
+      options:
+        - label: I'm willing to help write this tutorial
+        - label: I can provide real-world examples or case studies
+        - label: I can help with code review and testing
+        - label: I just want to request it (no contribution)

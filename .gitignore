@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.test
+
+# API keys and secrets
+config/secrets.json
+*.key
+*.pem
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output
+
+# Docker
+.dockerignore
+
+# Temporary files
+tmp/
+temp/
+
+# Tutorial-specific ignores
+tutorials/*/node_modules/
+tutorials/*/__pycache__/
+tutorials/*/dist/
+tutorials/*/build/
+tutorials/*/.env
+
+# Test outputs
+test-results/
+screenshots/
+videos/
+
+# Local development
+.cache/
+.parcel-cache/

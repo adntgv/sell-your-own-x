@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # SEO Analytics Dashboard
+  dashboard:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - AHREFS_API_KEY=${AHREFS_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  # Redis for caching API responses
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # PostgreSQL for storing SEO data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=seo_analytics
+      - POSTGRES_USER=seo_user
+      - POSTGRES_PASSWORD=seo_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Lighthouse CI for automated audits
+  lighthouse:
+    image: patrickhulce/lhci-server:latest
+    ports:
+      - "9001:9001"
+    environment:
+      - LHCI_ROOT=/data
+    volumes:
+      - lighthouse_data:/data
+
+volumes:
+  redis_data:
+  postgres_data:
+  lighthouse_data:

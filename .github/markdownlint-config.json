@@ -1,0 +1,21 @@
+{
+  "default": true,
+  "MD013": {
+    "line_length": 120,
+    "heading_line_length": 80,
+    "code_block_line_length": 120
+  },
+  "MD033": {
+    "allowed_elements": ["br", "details", "summary", "kbd", "sub", "sup"]
+  },
+  "MD041": false,
+  "MD024": {
+    "siblings_only": true
+  },
+  "MD025": {
+    "front_matter_title": ""
+  },
+  "MD029": {
+    "style": "ordered"
+  }
+}

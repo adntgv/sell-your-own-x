@@ -1,0 +1,104 @@
+name: 🐛 Bug Report
+description: Report a problem with a tutorial or code example
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our tutorials! Please provide detailed information to help us fix the issue.
+
+  - type: dropdown
+    id: tutorial
+    attributes:
+      label: Which tutorial is affected?
+      description: Select the tutorial where you encountered the issue
+      options:
+        - Landing Page Creation
+        - Email Marketing Automation
+        - Founder Story Building
+        - Community User Acquisition
+        - User Behavior Analytics
+        - Other (specify in description)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What type of issue are you reporting?
+      options:
+        - Code doesn't work
+        - Instructions unclear
+        - Missing dependencies
+        - Environment setup fails
+        - Broken links
+        - Outdated information
+        - Performance issue
+        - Security concern
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clearly describe what went wrong
+      placeholder: Describe the issue you encountered
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Go to tutorial section...
+        2. Run command...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What should have happened instead?
+      placeholder: Describe what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually happened, include error messages
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment Information
+      description: Please provide details about your setup
+      placeholder: |
+        - OS: (e.g., macOS 13.0, Ubuntu 20.04, Windows 11)
+        - Browser: (e.g., Chrome 108, Firefox 107)
+        - Node.js version: (if applicable)
+        - Docker version: (if applicable)
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that might help
+      placeholder: Screenshots, logs, related issues, etc.
+    validations:
+      required: false

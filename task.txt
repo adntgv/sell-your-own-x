@@ -1,0 +1,61 @@
+Great question. If "Build Your Own X" is like a curated roadmap for developers to deeply understand systems by building them from scratch, then the marketing equivalent for developers/founders would be something like:
+
+🧲 "Sell Your Own X" — The Developer’s Guide to Learning Marketing by Doing
+A curated list of hands-on tutorials, step-by-step projects, and real examples that teach you marketing by building and shipping it yourself — with the same spirit as Build Your Own X, but focused on customer acquisition, growth, and storytelling.
+
+🔥 Example Sections:
+📣 Sell Your Own Product
+How to write a landing page that converts (copywriting, value props)
+
+How to craft a founder story that builds trust
+
+How to set up a no-BS email marketing flow
+
+How to get your first 100 users from communities (Reddit, Twitter, Indie Hackers)
+
+How to price your SaaS or digital product
+
+How to run a basic launch on Product Hunt or Hacker News
+
+🧪 Build Your Own Funnel
+Build a top-to-bottom funnel with Google Ads
+
+Build a viral loop with referral mechanics
+
+Build a lead magnet funnel with email + notion downloads
+
+Build a waitlist that actually grows
+
+🎯 Build Your Own Growth Engine
+SEO from scratch: pick keywords, write content, and rank
+
+Launch your own newsletter from zero to 1K subscribers
+
+How to use cold email for lead gen (with real email templates)
+
+Use content + ChatGPT to auto-scale SEO
+
+📈 Analyze Your Own Metrics
+Track user behavior with PostHog or Plausible
+
+Set up event-based tracking (Google Analytics 4 or Mixpanel)
+
+Analyze CAC, LTV, conversion rate, churn
+
+🛠️ Tools to Build With
+ConvertKit, MailerLite, Beehiiv for email
+
+Webflow, Carrd, Framer, Typedream for landing pages
+
+Ahrefs, Ubersuggest for SEO
+
+Crisp, Tawk.to for customer support/chat
+
+🧠 What Makes It Effective
+Code-first when possible (e.g., Zapier workflows, scraping, analytics with scripts)
+
+Geared for technical people who dislike buzzwords and want proof and experiments
+
+Tutorials are project-based: you walk away with something live and usable
+
+Emphasizes learning by launching

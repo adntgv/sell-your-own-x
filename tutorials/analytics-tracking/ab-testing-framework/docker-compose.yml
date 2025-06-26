@@ -1,0 +1,137 @@
+version: '3.8'
+
+services:
+  # A/B Testing Platform
+  ab-platform:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DATABASE_URL=postgresql://ab_user:ab_password@postgres:5432/ab_testing
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      - postgres
+      - redis
+
+  # PostgreSQL for test data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=ab_testing
+      - POSTGRES_USER=ab_user
+      - POSTGRES_PASSWORD=ab_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Redis for caching and real-time data
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Event processing worker
+  event-worker:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node workers/event-processor.js
+      "
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://ab_user:ab_password@postgres:5432/ab_testing
+      - REDIS_URL=redis://redis:6379
+      - CLICKHOUSE_URL=${CLICKHOUSE_URL}
+    depends_on:
+      - postgres
+      - redis
+
+  # Statistical analysis worker
+  stats-worker:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node workers/stats-calculator.js
+      "
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://ab_user:ab_password@postgres:5432/ab_testing
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  # Real-time WebSocket server
+  websocket-server:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node services/websocket-server.js
+      "
+    environment:
+      - NODE_ENV=development
+      - WS_PORT=3001
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+
+  # Monitoring dashboard
+  dashboard:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node services/dashboard-server.js
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3002
+      - API_URL=http://ab-platform:3000
+      - WS_URL=ws://websocket-server:3001
+    depends_on:
+      - ab-platform
+      - websocket-server
+
+volumes:
+  postgres_data:
+  redis_data:

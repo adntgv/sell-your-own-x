@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Analytics Dashboard</title>
+    <meta name="description" content="Comprehensive SEO analytics dashboard with keyword tracking, technical audits, and performance monitoring">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Header -->
+        <header class="header">
+            <h1>SEO Analytics Dashboard</h1>
+            <div class="header-controls">
+                <select id="dateRange" class="date-selector">
+                    <option value="7d">Last 7 days</option>
+                    <option value="30d" selected>Last 30 days</option>
+                    <option value="90d">Last 90 days</option>
+                    <option value="12m">Last 12 months</option>
+                </select>
+                <button id="refreshData" class="btn btn-primary">Refresh</button>
+            </div>
+        </header>
+
+        <!-- Loading State -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading SEO data...</p>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboard-content" class="dashboard-content" style="display: none;">
+            <!-- Key Metrics Cards -->
+            <section class="metrics-section">
+                <div class="metrics-grid">
+                    <div class="metric-card" id="organic-traffic">
+                        <div class="metric-icon">📈</div>
+                        <div class="metric-info">
+                            <h3>Organic Traffic</h3>
+                            <div class="metric-value" id="organic-sessions">-</div>
+                            <div class="metric-change" id="traffic-change">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" id="keyword-rankings">
+                        <div class="metric-icon">🎯</div>
+                        <div class="metric-info">
+                            <h3>Top 10 Keywords</h3>
+                            <div class="metric-value" id="top-keywords">-</div>
+                            <div class="metric-change" id="keywords-change">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" id="avg-position">
+                        <div class="metric-icon">📊</div>
+                        <div class="metric-info">
+                            <h3>Avg. Position</h3>
+                            <div class="metric-value" id="average-position">-</div>
+                            <div class="metric-change" id="position-change">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" id="click-through-rate">
+                        <div class="metric-icon">👆</div>
+                        <div class="metric-info">
+                            <h3>Click-Through Rate</h3>
+                            <div class="metric-value" id="ctr-value">-</div>
+                            <div class="metric-change" id="ctr-change">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" id="technical-health">
+                        <div class="metric-icon">🔧</div>
+                        <div class="metric-info">
+                            <h3>Technical Health</h3>
+                            <div class="metric-value" id="health-score">-</div>
+                            <div class="metric-change" id="health-status">-</div>
+                        </div>
+                    </div>
+
+                    <div class="metric-card" id="backlinks">
+                        <div class="metric-icon">🔗</div>
+                        <div class="metric-info">
+                            <h3>Backlinks</h3>
+                            <div class="metric-value" id="backlink-count">-</div>
+                            <div class="metric-change" id="backlinks-change">-</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>Organic Traffic Trend</h3>
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Keyword Rankings Distribution</h3>
+                        <canvas id="rankingsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Tables -->
+            <section class="tables-section">
+                <!-- Keywords Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Top Keywords Performance</h3>
+                        <div class="table-controls">
+                            <input type="text" id="keywordSearch" placeholder="Search keywords..." class="search-input">
+                            <select id="intentFilter" class="filter-select">
+                                <option value="">All Intents</option>
+                                <option value="informational">Informational</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="transactional">Transactional</option>
+                                <option value="navigational">Navigational</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="keywordsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Keyword</th>
+                                    <th>Position</th>
+                                    <th>Change</th>
+                                    <th>Volume</th>
+                                    <th>Clicks</th>
+                                    <th>Impressions</th>
+                                    <th>CTR</th>
+                                    <th>Intent</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Keywords will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Technical Issues Table -->
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Technical SEO Issues</h3>
+                        <button id="runAudit" class="btn btn-secondary">Run New Audit</button>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="issuesTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Issue Type</th>
+                                    <th>Severity</th>
+                                    <th>Count</th>
+                                    <th>Impact</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Issues will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Opportunities -->
+            <section class="opportunities-section">
+                <div class="opportunities-container">
+                    <h3>Content Opportunities</h3>
+                    <div id="contentOpportunities" class="opportunities-grid">
+                        <!-- Opportunities will be populated here -->
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="auditModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>SEO Audit Results</h2>
+            <div id="auditResults">
+                <!-- Audit results will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

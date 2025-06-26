@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # Cold Email Platform
+  email-platform:
+    image: node:18-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        npm start
+      "
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CLEARBIT_API_KEY=${CLEARBIT_API_KEY}
+      - HUNTER_API_KEY=${HUNTER_API_KEY}
+      - DATABASE_URL=postgresql://email_user:email_password@postgres:5432/cold_email
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  # PostgreSQL for campaign data
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=cold_email
+      - POSTGRES_USER=email_user
+      - POSTGRES_PASSWORD=email_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Redis for queue management
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # Email sending worker
+  email-worker:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node workers/email-worker.js
+      "
+    environment:
+      - NODE_ENV=development
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - DATABASE_URL=postgresql://email_user:email_password@postgres:5432/cold_email
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  # Analytics worker
+  analytics-worker:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node workers/analytics-worker.js
+      "
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://email_user:email_password@postgres:5432/cold_email
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+  # Deliverability monitor
+  deliverability-monitor:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - ./code:/app
+      - /app/node_modules
+    command: >
+      sh -c "
+        npm install &&
+        node services/deliverability-monitor.js
+      "
+    environment:
+      - NODE_ENV=development
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - DATABASE_URL=postgresql://email_user:email_password@postgres:5432/cold_email
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+
+volumes:
+  postgres_data:
+  redis_data:
